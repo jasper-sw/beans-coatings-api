@@ -2,6 +2,8 @@ import threading
 import logging
 import sys
 from flask_api import create_flask_api
+from src.clients.sqlite_client import SqliteClient
+import os
 
 try:
     logger = logging.getLogger()
@@ -12,6 +14,9 @@ try:
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     logger.log(69, "Initializing beans-coatings-api...")
+    # set up clients
+    sqlc = SqliteClient(db_path=os.environ["SQLITE_DB_PATH"],
+                        logger=logger)
 
     flask_thread = threading.Thread(target=create_flask_api,
                                     name="flask_api",
